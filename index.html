@@ -1,54 +1,74 @@
+
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Umlilo</title>
-  <style>
-    body {
-      background-color: black;
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
-      margin: 40px;
-    }
-    h1 {
-      font-size: 48px;
-      border-bottom: 2px solid #00ff00;
-      display: inline-block;
-      animation: typing 3s steps(10), blink 1s infinite;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    .subtitle {
-      margin-top: 10px;
-      font-style: italic;
-      color: #66ff66;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    @keyframes blink {
-      50% { border-color: transparent; }
-    }
-    .post {
-      margin-top: 40px;
-      border-top: 1px dashed #00ff00;
-      padding-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Umlilo Terminal</title>
+    <style>
+        body {
+            background-color: black;
+            color: #00FF00;
+            font-family: "Courier New", Courier, monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #terminal {
+            width: 100vw;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            animation: flicker 0.5s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { opacity: 0.9; }
+            100% { opacity: 1; }
+        }
+        .boot-line {
+            opacity: 0;
+            animation: showLine 0.3s forwards;
+        }
+        @keyframes showLine {
+            to { opacity: 1; }
+        }
+    </style>
 </head>
-<body>
-  <h1>> UMLILO_</h1>
-  <p class="subtitle">Pensar é incendiar-se por dentro.</p>
+<body onclick="playSound()">
+    <audio id="beep" src="beep.mp3" preload="auto"></audio>
+    <div id="terminal"></div>
 
-  <div class="post">
-    <h2>Fragmento 01</h2>
-    <p>Às vezes a lucidez parece mais um incêndio do que uma iluminação.</p>
-  </div>
+    <script>
+        const terminal = document.getElementById("terminal");
+        const beep = document.getElementById("beep");
+        const lines = [
+            "INITIATING TERMINAL N.IVWOH",
+            "SYSTEM [BL 16.99] [OK]",
+            "USER CODE: X-17-1993",
+            "MODULE: umlilo_core",
+            "CORD...",
+            "AUTODECOUNT 127.38.1718",
+            ">>> Ready"
+        ];
 
-  <div class="post">
-    <h2>Fragmento 02</h2>
-    <p>Não escrevo para encontrar sentido, mas para expurgar o excesso de existir.</p>
-  </div>
+        let index = 0;
+
+        function playSound() {
+            beep.play();
+        }
+
+        function showLine() {
+            if (index < lines.length) {
+                const line = document.createElement("div");
+                line.textContent = lines[index];
+                line.className = "boot-line";
+                line.style.animationDelay = `${index * 0.5}s`;
+                terminal.appendChild(line);
+                index++;
+                setTimeout(showLine, 500);
+            }
+        }
+
+        showLine();
+    </script>
 </body>
 </html>
